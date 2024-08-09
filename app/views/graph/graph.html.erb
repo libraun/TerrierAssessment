@@ -1,0 +1,21 @@
+<tbody>
+  <tr>
+    <th> id </th>
+    <th> technician_id </th>
+    <th> location_id </th>
+    <th> time </th>
+    <th> duration </th>
+    <th> price </th>
+  </tr>
+
+  <% Workorder.all.each { |order| %>
+<tr>
+      <th> <% order.id! %> </th>
+      <th> <% order.technician_id? %> </th>
+      <th> <% order.location_id? %></th>
+      <th> <% order.time! %> </th>
+      <th> <% order.duration! %> </th>
+      <th> <% order.price! %></th>
+</tr>
+<%  } %>
+</tbody>
