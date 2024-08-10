@@ -8,14 +8,9 @@
     <th> price </th>
   </tr>
 
-  <% Workorder.all.each { |order| %>
+  <% LocationRecord.all.each { |order| %>
 <tr>
       <th> <% order.id! %> </th>
-      <th> <% order.technician_id? %> </th>
-      <th> <% order.location_id? %></th>
-      <th> <% order.time! %> </th>
-      <th> <% order.duration! %> </th>
-      <th> <% order.price! %></th>
 </tr>
 <%  } %>
 </tbody>

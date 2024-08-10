@@ -18,6 +18,24 @@
 </head>
 
 <body>
-<%= yield link_to(name="/views/graph/graph.html.erb") %>
+  <table>
+    <tbody>
+      <tr>
+        <th> id </th>
+        <th> technician_id </th>
+        <th> location_id </th>
+        <th> time </th>
+        <th> duration </th>
+        <th> price </th>
+      </tr>
+
+      <% LocationRecord.all.each { |order| %>
+        <tr>
+          <th> <% order.id! %> </th>
+        </tr>
+      <%  } %>
+
+    </tbody>
+  </table>
 </body>
 </html>
