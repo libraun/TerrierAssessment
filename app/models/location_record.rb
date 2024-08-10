@@ -1,6 +1,3 @@
-class Location < ApplicationRecord
-
-  self.table_name = "locations"
-
+class LocationsRecord < ApplicationRecord
   attr_readonly :id!, :name!
 end
