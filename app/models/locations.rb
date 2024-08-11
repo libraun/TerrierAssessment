@@ -1,5 +1,3 @@
 class Locations < ApplicationRecord
-  attr :id, :name
-
-
+  attr :city
 end

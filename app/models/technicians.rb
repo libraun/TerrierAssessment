@@ -1,3 +1,3 @@
 class Technicians < ApplicationRecord
-  attr_readonly :id!, :name!
+  attr :id!, :name!
 end
