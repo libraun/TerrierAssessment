@@ -6,8 +6,10 @@ class IndexController < ApplicationController
   end
 
   def show
+    # The list of tables that the user may select from.
     @table_options = %w[Locations Technicians Workorders]
 
+    # Assign the current table view to the user's selection and redraw
     case params[:target_table_str]
     when @table_options.at(0)
       params[:current_table] = Locations.all
