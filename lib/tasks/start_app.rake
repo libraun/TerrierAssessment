@@ -1,4 +1,4 @@
-task :start_app => [ :environment ] do
+task start_app: [ :environment ] do
   INPUT_ARGS = ARGV
 
   def self.get_csv_data(csv_path)
@@ -23,7 +23,7 @@ task :start_app => [ :environment ] do
 
       # Get the string at target_index into current array and split by whitespace
       # to get date and time, respectively
-      time_contents = row.at(target_index).split(' ')
+      time_contents = row.at(target_index).split(" ")
 
       # raise an error if contents of time field doesn't have
       # both a date and a time (separated by whitespace)
@@ -35,8 +35,8 @@ task :start_app => [ :environment ] do
       if time_contents[1].length == 4
 
         # Append leading 0 to time and replace data[i] with result.
-        time_contents[1].insert(0, '0')
-        rows[i] = time_contents.join(' ')
+        time_contents[1].insert(0, "0")
+        rows[i] = time_contents.join(" ")
 
       elsif time_contents[1].length != 5
         raise("Error parsing time contents: Time should be provided as either (HH:mm) or (H:mm), got #{time}")
@@ -50,8 +50,8 @@ task :start_app => [ :environment ] do
 
   # Load data from csv
   locations_data = self.get_csv_data(locations_path).at(0)
-  technicians_data = self.get_csv_data(technicians_path)
-  work_orders_data = self.get_csv_data(work_orders_path)
+  technicians_data = self.get_csv_data(technicians_path).at(0)
+  work_orders_data = self.get_csv_data(work_orders_path).at(0)
 
   # Strip headers from CSV data
   locations_data = locations_data.drop(1)
@@ -62,34 +62,34 @@ task :start_app => [ :environment ] do
   # last third index of work_orders_data
   work_orders_data = self.reformat_work_order_timestamps(
     work_orders_data, target_index=-3)
-
   # Insert locations into db
+
+  # Insert technicians into db
+  technicians_data.each { |technician|
+
+
+    entry = Technicians.new
+    entry.id = technician.at(0)
+    entry.name = technician.at(1)
+    entry.save!
+  }
   locations_data.each { |location|
 
     entry = Locations.new
     entry.id = location.at(0)
     entry.name = location.at(1)
     entry.city = location.at(2)
-    entry.save
+    entry.save!
   }
-
-  # Insert technicians into db
-  technicians_data.each { |technician|
-    entry = Technicians.new
-    entry.id = technician.at(0)
-    entry.name = technician.at(1)
-    entry.save
-  }
-
   # Insert work_orders into db
   work_orders_data.each { |order|
-    entry = Workorders.new(order)
+    entry = Workorders.new
     entry.id = order.at(0)
     entry.technician_id = order.at(1)
     entry.location_id = order.at(2)
-    entry.time = order.at(3)
+    entry.date = order.at(3)
     entry.duration = order.at(4)
     entry.price = order.at(5)
-    entry.save
+    entry.save!
   }
 end

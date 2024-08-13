@@ -6,9 +6,12 @@
 
 * Configuration
 
-* Database creation
+* Database creation & initialization
 
-* Database initialization
+This app contains a rake startup task that builds and initializes the database.
+If this doesn't work, then you can use the command:
+
+>$ bundle rake start_app
 
 * How to run the test suite
 

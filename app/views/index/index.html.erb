@@ -16,26 +16,32 @@
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
 </head>
-
 <body>
+  <div class="selection-top-bar">
+      <%= form_with url: "show", method: "get" do |form| %>
+          <label for="target_table_str">Select Table</label>
+          <%= form.select :target_table_str,
+                          @table_options,
+                          selected: params[:target_table_str]%>
+          <%= form.submit "Display Results"%>
+      <% end %>
+  </div>
+
   <table>
-    <tbody>
+      <% tgt_table = (params[:current_table] != nil) ? params[:current_table] : Locations.all  %>
       <tr>
-        <th> id </th>
-        <th> technician_id </th>
-        <th> location_id </th>
-        <th> time </th>
-        <th> duration </th>
-        <th> price </th>
+          <%tgt_table.column_names.each do |name| %>
+              <th><%= name %></th>
+          <% end %>
       </tr>
-
-      <% Locations.all.each { |order| %>
-        <tr>
-          <th> <% order.id! %> </th>
-        </tr>
-      <%  } %>
-
-    </tbody>
+      <% tgt_table.each do |entry| %>
+          <tr>
+              <% tgt_table.column_names.each do |name| %>
+                  <th><%=entry.attributes_for_database[name] %></th>
+              <% end %>
+          </tr>
+      <% end %>
   </table>
+
 </body>
 </html>
