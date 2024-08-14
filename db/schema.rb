@@ -26,8 +26,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_13_174315) do
   create_table "workorders", id: :integer, default: nil, force: :cascade do |t|
     t.integer "technician_id", null: false
     t.integer "location_id", null: false
-    t.date "date", null: false
-    t.time "time", null: false
+    t.datetime "date", null: false
     t.float "duration"
     t.float "price"
   end

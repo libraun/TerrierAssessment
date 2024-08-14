@@ -23,9 +23,7 @@
         <th><%=header%></th>
 
         <% params[:current_table][header].each do |entry| %>
-          <th><%=entry["location_id"] %></th>
           <th><%=entry["date"] %></th>
-          <th><%=entry["time"] %></th>
           <th><%=entry["duration"] %></th>
         <% end %>
       </tr>

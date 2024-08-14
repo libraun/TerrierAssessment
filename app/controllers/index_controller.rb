@@ -1,6 +1,7 @@
 class IndexController < ApplicationController
   attr_accessor :headers, :current_table
   def index
+
     technician_names = []
     Technician.all.each do |technician|
       technician_names.append(technician["name"])
@@ -8,18 +9,42 @@ class IndexController < ApplicationController
 
     params[:headers] = technician_names
 
-    query = """
+    query = <<~TEXT
       SELECT * FROM workorders
         INNER JOIN technicians ON technicians.id = technician_id AND name = '%s'
-      ORDER BY (workorders.date, workorders.time) """
+      ORDER BY (workorders.date);
+    TEXT
 
     records = {}
     technician_names.each do |name|
       records[name] = ActiveRecord::Base.connection.execute(query % name)
-    end
-    # The list of tables that the user may select from.
 
-    # Assign the current table view to the user's selection and redraw
+      times = []
+      records[name].each do |row|
+        puts row["date"]
+        times.append([row["date"], row["duration"]])
+
+      end
+
+      times.each.with_index do | pair, i|
+
+        start_time = pair.at(0)
+        end_time = start_time + pair.at(1).minutes
+        if i != times.length - 1
+
+          next_pair = times.at(i + 1)
+          next_start_time = next_pair.at(0)
+
+          difference = (next_start_time - end_time) / 1.minutes
+          puts difference.to_s
+        end
+      end
+    end
+
+    records.values.each do |values|
+
+    end
+
     params[:current_table] = records
 
     respond_to do |format|
