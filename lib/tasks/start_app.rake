@@ -11,9 +11,9 @@ task start_app: [ :environment ] do
 
       # Iterate through each line in text, appending rows
       # to output
-      text_content.read.each_line do |line|
+      text_content.read.each_line(chomp: true) do |line|
 
-        csv_row = line.split(',')
+        csv_row = line.split(",")
         csv_items.append(csv_row)
       end
     end
@@ -22,9 +22,9 @@ task start_app: [ :environment ] do
   end
 
   # Drop table records (for idempotency)
-  Workorders.destroy_all
-  Locations.destroy_all
-  Technicians.destroy_all
+  Workorder.destroy_all
+  Location.destroy_all
+  Technician.destroy_all
 
   # Load data from csv
   locations_data = self._get_csv_values("storage/locations.csv")
@@ -33,14 +33,12 @@ task start_app: [ :environment ] do
 
   # Insert technicians into db
   technicians_data.each { |technician|
-    entry = Technicians.new
-    entry.id = technician.at(0)
-    entry.name = technician.at(1)
+    entry = Technician.create!(id: technician.at(0), name: technician.at(1))
     entry.save!
   }
   # Insert locations
   locations_data.each { |location|
-    entry = Locations.new
+    entry = Location.new
     entry.id = location.at(0)
     entry.name = location.at(1)
     entry.city = location.at(2)
@@ -48,11 +46,12 @@ task start_app: [ :environment ] do
   }
   # Insert work_orders into db
   workorders_data.each { |order|
-    entry = Workorders.new
-    entry.id = order.at(0)
-    entry.technician_id = order.at(1)
+    entry = Workorder.new(id: order.at(0), technician_id: order.at(1))
     entry.location_id = order.at(2)
-    entry.date = order.at(3)
+    datetime = order.at(3).split(" ")
+    entry.date = datetime[0]
+    entry.time = datetime[1]
+
     entry.duration = order.at(4)
     entry.price = order.at(5)
     entry.save!

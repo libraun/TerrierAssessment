@@ -1,0 +1,2 @@
+class Workorder < ApplicationRecord
+end
