@@ -4,17 +4,11 @@
 
 * System dependencies
 
-* Configuration
+This app is intended to be run on a Windows machine.
 
 * Database creation & initialization
 
-This app contains a rake startup task that builds and initializes the database.
-If this doesn't work, then you can use the command:
+This app contains a rake startup task that builds and initializes the database. This task runs automatically,
+but can also be run using:
 
 >$ bundle rake start_app
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
