@@ -16,11 +16,11 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: .ruby-version
+          ruby-version: 3.3.4
           bundler-cache: true
-
+      
       - name: Change permissions for bin directory
-        run: chmod +x bin/brakeman
+        run: chmod u+x bin/brakeman
       - name: Scan for security vulnerabilities in Ruby dependencies
         run: bin/brakeman --no-pager
 
