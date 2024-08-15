@@ -46,15 +46,14 @@ task start_app: [ :environment ] do
   trigger_function_def = <<~TEXT
     CREATE FUNCTION create_trigger() RETURNS TRIGGER AS $$
     DECLARE
-      next_date TIME; 
-      end_date TIME;
+      next_workorder_begin TIME;
+      new_workorder_end TIME;
     BEGIN
-      SELECT date::time INTO next_date FROM workorders
+      SELECT date::time FROM workorders INTO next_workorder_begin
         WHERE date > NEW.date and technician_id = NEW.technician_id
       ORDER BY date LIMIT 1;
-      end_date := NEW.date + (NEW.duration * interval '1 minute');
-      IF end_date > next_date THEN 
-        RETURN NULL;
+      new_workorder_end := NEW.date + (NEW.duration * interval '1 minute');
+      IF new_workorder_end > next_workorder_begin THEN RETURN NULL;
       END IF;
       RETURN NEW;
     END;
