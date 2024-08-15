@@ -19,8 +19,10 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Change permissions for bin directory
+        run: chmod +x /bin/*
       - name: Scan for security vulnerabilities in Ruby dependencies
-        run: sudo ./bin/brakeman --no-pager
+        run: /bin/brakeman --no-pager
 
   scan_js:
     runs-on: ubuntu-latest
