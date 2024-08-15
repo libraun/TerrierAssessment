@@ -1,2 +1,0 @@
-class Workorders < ApplicationRecord
-end
