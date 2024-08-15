@@ -43,7 +43,7 @@ class IndexController < ApplicationController
     _query = <<~TEXT
       SELECT * FROM workorders
         INNER JOIN technicians ON technicians.id = technician_id AND name = 'Juan Garcia'
-      ORDER BY (workorders.date, workorders.time) 
+      ORDER BY (workorders.date, workorders.time);
     TEXT
     _records = ActiveRecord::Base.connection.execute(_query)
     # Assign the current table view to the user's selection and redraw

@@ -21,7 +21,6 @@
     <% params[:headers].each do |header| %>
       <tr>
         <th><%=header%></th>
-
         <% params[:current_table][header].each do |entry| %>
           <th><%=entry["date"] %></th>
           <th><%=entry["duration"] %></th>

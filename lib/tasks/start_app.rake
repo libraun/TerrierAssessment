@@ -54,7 +54,6 @@ task start_app: [ :environment ] do
     END;
     $$ LANGUAGE plpgsql;
   TEXT
-
   # PLPGSQL trigger that executes previous function on each row
   # when a new entry is inserted or deleted. (See above for details)
   trigger_def = <<~TEXT
