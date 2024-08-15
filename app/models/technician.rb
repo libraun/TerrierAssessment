@@ -1,2 +1,1 @@
-class Technician < ApplicationRecord
-end
+class Technician < ApplicationRecord; end

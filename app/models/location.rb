@@ -1,2 +1,1 @@
-class Location < ApplicationRecord
-end
+class Location < ApplicationRecord; end

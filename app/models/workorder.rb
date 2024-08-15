@@ -1,2 +1,1 @@
-class Workorder < ApplicationRecord
-end
+class Workorder < ApplicationRecord; end
