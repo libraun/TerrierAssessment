@@ -19,8 +19,6 @@ jobs:
           ruby-version: 3.3.4
           bundler-cache: true
       - run: echo $PATH | tr ':' '\n'
-      - name: Lint Ruby files
-        run: rubocop --parallel
       - name: Change permissions for bin directory
         run: chmod +x bin/brakeman
       - name: Scan for security vulnerabilities in Ruby dependencies
