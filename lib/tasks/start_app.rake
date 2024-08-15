@@ -1,19 +1,14 @@
 task start_app: [ :environment ] do
-
   INPUT_ARGS = ARGV
-
   # Extracts rows from csv file.
   #
   # @param csv_path The (string) path, separated by newline characters
   # @return A list of rows from the (.csv) path, EXCLUDING headers.
   def self._get_csv_values(csv_path)
-
     csv_items = []
     File.open(csv_path, mode="r") do |text_content|
-
       # Iterate through each line in text, appending rows to output
       text_content.read.each_line(chomp: true) do |line|
-
         # Split line by comma and append to result
         csv_row = line.split(",")
         csv_items.append(csv_row)
