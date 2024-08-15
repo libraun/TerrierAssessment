@@ -20,7 +20,7 @@ jobs:
           bundler-cache: true
 
       - name: Change permissions for bin directory
-        run: chmod +x /bin/*
+        run: chmod +x /bin/brakeman
       - name: Scan for security vulnerabilities in Ruby dependencies
         run: /bin/brakeman --no-pager
 
