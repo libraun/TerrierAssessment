@@ -16,9 +16,11 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: .ruby-version
+          ruby-version: 3.3.4
           bundler-cache: true
-
+      - run: echo $PATH | tr ':' '\n'
+      - name: Lint Ruby files
+        run: rubocop --parallel
       - name: Change permissions for bin directory
         run: chmod +x bin/brakeman
       - name: Scan for security vulnerabilities in Ruby dependencies
