@@ -1,5 +1,7 @@
 task start_app: [ :environment ] do
   INPUT_ARGS = ARGV
+
+  Rake::Task["db:schema:load"].invoke
   # Extracts rows from csv file.
   #
   # @param csv_path The (string) path, separated by newline characters
