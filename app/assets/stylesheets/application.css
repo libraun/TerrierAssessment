@@ -13,3 +13,57 @@
  *= require_tree .
  *= require_self
  */
+
+.popup-display {
+    display: none;
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    align-items: center;
+    justify-content:center;
+    z-index: 10;
+}
+
+.popup-window{
+    display: inline-block;
+    background-color: #fefefe;
+    margin: 50% auto;
+    padding: 10px;
+    border: 1px solid #888;
+    text-align: center;
+    height: 25%;
+    width: 25%;
+}
+
+.table-col {
+    display: flex;
+    flex-direction: column;
+    padding-right: 10px;
+    padding-top: 5px;
+}
+
+.table-header {
+    float: right;
+    text-align: center;
+}
+
+.schedule-block {
+    display: inline-block;
+    position: relative;
+    width: 200px;
+}
+
+.schedule-block-button {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
+
+.close-popup-button {
+    position: relative;
+    height:25%;
+    width: 25%;
+    left: 42.1%;
+    bottom: 5%;
+}

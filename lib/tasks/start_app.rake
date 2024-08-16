@@ -29,7 +29,6 @@ task start_app: [ :environment ] do
   # Drop function that generates comp_date trigger
   ActiveRecord::Base.connection.execute(
     "DROP FUNCTION IF EXISTS create_trigger;")
-
   # PLPGSQL function that returns a trigger to check each row in workorders for
   # an invalid time (i.e., an appointment that occurs before the last chronological
   # appointment is set to end)
@@ -45,7 +44,7 @@ task start_app: [ :environment ] do
       new_workorder_end TIME;
     BEGIN
       SELECT date::time FROM workorders INTO next_workorder_begin
-        WHERE date > NEW.date and technician_id = NEW.technician_id
+        WHERE date::time > NEW.date::time and technician_id = NEW.technician_id
       ORDER BY date LIMIT 1;
       new_workorder_end := NEW.date + (NEW.duration * interval '1 minute');
       IF new_workorder_end > next_workorder_begin THEN RETURN NULL;
@@ -88,9 +87,34 @@ task start_app: [ :environment ] do
 
   # Insert work_orders into db.
   workorders_data.each { |order|
+    date_str = order.at(3)
+
+    # A 2-tuple which represents the date and the time, respectively
+    datetime = date_str.split(" ")
+
+    # Because of how Ruby parses Time objects, we need to
+    # preprocess the "year" part of each datetime
+    datepart = datetime[0].split("/")
+
+    # If the "year" part comprises only two characters, then we need to add
+    # "20" (the current century) as a prefix.
+    if datepart[-1].length == 2
+      # Add prefix to year
+      datepart[-1] = "20" + datepart[-1]
+
+      # Join results to produce the original date, with "20" prepended to the year
+      datepart = (datepart * "/").to_s
+      date_str = ([ datepart, datetime[1] ] * " ").to_s
+    end
+
+    # Format the time according to the csv, and subtract the offset of Ruby's standard timezone
+    # to get the final date.
+    date = Time.strptime(date_str, "%m/%d/%Y %H:%M") - 5.hours
+    date = date.to_s
+
     entry = Workorder.create!(
       id: order.at(0), technician_id: order.at(1), location_id: order.at(2),
-      date: order.at(3), duration: order.at(4), price: order.at(5))
+      date: date, duration: order.at(4), price: order.at(5))
     entry.save!
   }
 end

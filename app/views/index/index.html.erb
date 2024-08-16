@@ -16,17 +16,61 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
 </head>
-<body>
-  <table>
-    <% params[:headers].each do |header| %>
-      <tr>
-        <th><%=header%></th>
-        <% params[:current_table][header].each do |entry| %>
-          <th><%=entry["date"] %></th>
-          <th><%=entry["duration"] %></th>
+<body style="display: flex; justify-content: center">
+  <div data-controller="popup" style="display: flex; align-items: center; position: absolute">
+
+    <%= render "index/popup" %>
+
+    <div data-popup-target="grid" style="display: flex">
+
+      <div class="table-col">
+
+        <% time_axis = params[:min_start_time] %>
+        <div style="position: relative;">
+          <h4><%= time_axis.to_s.split(" ")[0] %></h4>
+        </div>
+
+        <% while time_axis < params[:max_end_time]%>
+
+          <div style="position: relative; height: 60px; bottom: 3%;">
+
+            <h5><%= time_axis.to_s.split(" ")[1] %></h5>
+          </div>
+          <% time_axis = time_axis + 60.minutes %>
         <% end %>
-      </tr>
-    <% end %>
-  </table>
+      </div>
+
+      <% params[:headers].each do |header| %>
+        <div class="table-col">
+
+          <h3 class="table-header"><%=header %></h3>
+
+          <% params[:current_table][header].each do |tuple| %>
+
+            <% if tuple != nil %>
+
+              <% technician_available = (tuple[3] == 1) ? true : false %>
+              <% column_color = technician_available ? "silver" : "mediumseagreen" %>
+
+              <% block_start = tuple[1].to_s.split(" ")[1] %>
+              <% block_end = tuple[2].to_s.split(" ")[1] %>
+
+              <% block_interval_str = ([block_start, block_end] * " ").to_s %>
+
+              <div class="schedule-block" style="height:<%= tuple[0] %>px; background-color: <%= column_color %>;%>">
+                <button class="schedule-block-button" data-action="click->popup#show" value="<%=block_interval_str %>">
+                  <% if not technician_available  %>
+                    Active Workorder From <%=block_start %> Until <%=block_end %>
+                  <% else %>
+                    AVAILABLE
+                  <% end %>
+                </button>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </body>
 </html>
