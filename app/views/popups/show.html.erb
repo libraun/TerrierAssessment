@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @popup %>
+
+<div>
+  <%= link_to "Edit this popup", edit_popup_path(@popup) %> |
+  <%= link_to "Back to popups", popups_path %>
+
+  <%= button_to "Destroy this popup", @popup, method: :delete %>
+</div>

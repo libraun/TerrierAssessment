@@ -1,0 +1,11 @@
+<% content_for :title, "New popup" %>
+
+<h1>New popup</h1>
+
+<%= render "form", popup: @popup %>
+
+<br>
+
+<div>
+  <%= link_to "Back to popups", popups_path %>
+</div>
